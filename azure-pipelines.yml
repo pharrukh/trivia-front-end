@@ -1,0 +1,27 @@
+variables:
+  - group: pay-as-you-go-subscription
+
+trigger:
+  - master
+
+pool:
+  vmImage: "windows-latest"
+
+steps:
+  - task: CacheBeta@1
+    inputs:
+      key: 'npm | "$(Agent.OS)" | package-lock.json'
+      path: $(Pipeline.Workspace)/.npm
+      restoreKeys: 'npm | "$(Agent.OS)"'
+
+  - script: npm ci
+
+  - script: |
+      npm run build
+    displayName: "build"
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: $(subscription-id)
+      scriptType: "ps"
+      scriptLocation: "inlineScript"
+      inlineScript: az storage blob upload-batch --account-name $(blog-storage-account) --account-key $(blog-storage-key) -s ./build/. -d '$web/product/trivia'
