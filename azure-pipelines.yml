@@ -2,8 +2,9 @@ trigger:
   - master
 
 variables:
-  NPM_CACHE_FOLDER: $(Pipeline.Workspace)/.npm
   - group: pay-as-you-go-subscription
+  - name: NPM_CACHE_FOLDER
+    value: $(Pipeline.Workspace)/.npm
 
 pool:
   vmImage: "windows-latest"
