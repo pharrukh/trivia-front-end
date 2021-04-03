@@ -1,8 +1,8 @@
-variables:
-  - group: pay-as-you-go-subscription
-
 trigger:
   - master
+
+variables:
+  - group: pay-as-you-go-subscription
 
 pool:
   vmImage: "windows-latest"
