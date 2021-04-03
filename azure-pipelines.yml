@@ -2,19 +2,24 @@ trigger:
   - master
 
 variables:
+  NPM_CACHE_FOLDER: $(Pipeline.Workspace)/.npm
   - group: pay-as-you-go-subscription
 
 pool:
   vmImage: "windows-latest"
 
 steps:
-  - task: CacheBeta@1
+  - task: Cache@2
+    displayName: Cache npm dependencies
     inputs:
       key: 'npm | "$(Agent.OS)" | package-lock.json'
-      path: '$(Pipeline.Workspace)/.npm'
-      restoreKeys: 'npm | "$(Agent.OS)"'
+      restoreKeys: |
+        npm | "$(Agent.OS)"
+        npm
+      path: $(NPM_CACHE_FOLDER)
 
-  - script: npm ci
+  - script: npm ci --cache $(NPM_CACHE_FOLDER)
+    displayName: 'Install npm dependencies'
 
   - script: |
       npm run build
