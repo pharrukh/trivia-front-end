@@ -24,7 +24,7 @@ class QuestionView extends Component {
 
   getQuestions = () => {
     $.ajax({
-      url: `${getHost()}/questions?page=${this.state.page}`, //TODO: update request URL
+      url: `${getHost()}/questions?page=${this.state.page}`,
       type: "GET",
       success: (result) => {
         this.setState({
@@ -62,7 +62,7 @@ class QuestionView extends Component {
 
   getByCategory = (id) => {
     $.ajax({
-      url: `${getHost()}/categories/${id}/questions`, //TODO: update request URL
+      url: `${getHost()}/categories/${id}/questions`,
       type: "GET",
       success: (result) => {
         this.setState({
@@ -81,17 +81,14 @@ class QuestionView extends Component {
 
   submitSearch = (searchTerm) => {
     $.ajax({
-      url: `${getHost()}/questions`, //TODO: update request URL
+      url: `${getHost()}/questions`,
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',
-      data: JSON.stringify({ searchTerm: searchTerm }),
+      data: JSON.stringify({ search_term: searchTerm }),
       // xhrFields: { // TODO: fix that
       //   withCredentials: true
       // },
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
       crossDomain: true,
       success: (result) => {
         this.setState({
@@ -112,7 +109,7 @@ class QuestionView extends Component {
     if (action === 'DELETE') {
       if (window.confirm('are you sure you want to delete the question?')) {
         $.ajax({
-          url: `${getHost()}/questions/${id}`, //TODO: update request URL
+          url: `${getHost()}/questions/${id}`,
           type: "DELETE",
           success: (result) => {
             this.getQuestions();
@@ -130,7 +127,7 @@ class QuestionView extends Component {
     return (
       <div className="question-view">
         <div className="categories-list">
-          <h2 onClick={() => { this.getQuestions() }}>Categories}</h2>
+          <h2 onClick={() => { this.getQuestions() }}>Categories</h2>
           <ul>
             {Object.keys(this.state.categories).map((id,) => (
               <li key={id} onClick={() => { this.getByCategory(id) }}>
